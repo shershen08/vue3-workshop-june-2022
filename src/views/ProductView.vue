@@ -1,6 +1,5 @@
 <template>
       <div class="row wow fadeIn">
-
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
@@ -8,6 +7,9 @@
 
         </div>
         <!--Grid column-->
+
+                <button @click="$emit('back')">go back</button>
+
 
         <!--Grid column-->
         <div class="col-md-6 mb-4">
@@ -59,8 +61,16 @@
 </template>
 
 <script>
+import { defineComponent, computed} from '@vue/runtime-core'
+import { useStore } from 'vuex'
 export default {
-
+  setup(){
+        const store = useStore()
+    const product = computed(() => store.state.selectedProduct) 
+  return {
+      product
+    }
+  }
 }
 </script>
 

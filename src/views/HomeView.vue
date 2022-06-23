@@ -1,10 +1,13 @@
 <template>
      <section class="text-center mb-4">
+          
+          <button @click="loadDataCallback">loadData</button>
           <template v-if="productsList.isLoading">
             loading...
           </template>
+
         <div class="row wow fadeIn">
-          <ProductList :itemsList="productsList.data"/>
+          <ProductList :itemsList="productsList"/>
         </div>
 
       </section>
@@ -12,30 +15,26 @@
 
 <script>
 import ProductList from '@/components/product/ProductList.vue'
-import { onMounted, reactive } from 'vue'
-import {loadProducts} from '@/services/catalog'
+import {useProducts} from '@/hooks/products'
+
 export default {
   components: {
     ProductList
   },
   setup(){
-    const productsList = reactive({
-      data: [],
-      isLoading: false
-    })
 
-    onMounted(() => {
-      productsList.isLoading = true
-        
-        loadProducts()
-                .then(json=> {
-                  productsList.data = json
-                  productsList.isLoading = false
-                })
-    })
+    const {products, loadData} = useProducts(true)
+    
+    //other use case
+    //const {products} = useProducts(true)
+
+    const loadDataCallback = () => {
+      loadData()
+    }
 
     return {
-      productsList
+      productsList: products,
+      loadDataCallback
     }
   }
 }
